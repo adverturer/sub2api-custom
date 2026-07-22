@@ -56,6 +56,23 @@
             </span>
           </span>
         </p>
+        <!-- 命中/创建：整段彩色；命中率：仅数字彩色（指定 hex） -->
+        <p class="mt-0.5 flex flex-wrap items-center gap-x-1 text-xs">
+          <span class="text-[#0ea5e9]">
+            {{ t('usage.cacheHit') }}: {{ formatTokens(cacheReadTokens) }}
+          </span>
+          <span class="text-gray-400">·</span>
+          <span class="text-[#f59e0b]">
+            {{ t('usage.cacheCreate') }}: {{ formatTokens(cacheCreationTokens) }}
+          </span>
+        </p>
+        <p class="text-xs text-gray-400">
+          {{ t('usage.cacheHitRate') }}:
+          <span class="tabular-nums text-[#0ea5e9]">
+            {{ formatTokens(cacheReadTokens) }}/{{ formatTokens(cacheHitRateDenom) }}
+            {{ cacheHitRatePct.toFixed(1) }}%
+          </span>
+        </p>
       </div>
     </div>
     <div class="card p-4 flex items-center gap-3">
@@ -125,4 +142,23 @@ const formatTokens = (value: number) => {
 
 const cacheLabel = () => t('usage.cacheTotal')
 const cacheDetailLabel = () => t('usage.cacheBreakdown')
+
+/** 缓存命中 = cache_read；缓存创建 = cache_creation */
+const cacheReadTokens = computed(() => props.stats?.total_cache_read_tokens || 0)
+const cacheCreationTokens = computed(() => props.stats?.total_cache_creation_tokens || 0)
+
+/**
+ * 命中率分母与 TokenUsageTrend 一致：
+ * input + cache_read + cache_creation
+ */
+const cacheHitRateDenom = computed(() => {
+  const input = props.stats?.total_input_tokens || 0
+  return input + cacheReadTokens.value + cacheCreationTokens.value
+})
+
+const cacheHitRatePct = computed(() => {
+  const denom = cacheHitRateDenom.value
+  if (denom <= 0) return 0
+  return (cacheReadTokens.value / denom) * 100
+})
 </script>
