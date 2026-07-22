@@ -83,8 +83,6 @@ temp/
 *.temp
 *.log
 *.bak
-build-local.err
-build-local.pid
 .cache/
 .dev/
 .serena/
@@ -138,7 +136,7 @@ docs/*
 !docs/PAYMENT_CN.md
 !docs/ADMIN_PAYMENT_INTEGRATION_API.md
 !docs/ASYNC_IMAGE_TASKS.md
-!docs/LOCAL_IMAGE_BUILD_CN.md
+!docs/CACHE_STATS_UI_CN.md
 !docs/legal/
 !docs/legal/*.md
 .serena/
