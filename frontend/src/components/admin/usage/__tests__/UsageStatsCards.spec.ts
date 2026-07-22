@@ -13,6 +13,9 @@ const messages: Record<string, string> = {
   'usage.cacheBreakdown': 'Cache Token Breakdown',
   'usage.cacheCreationTokensLabel': 'Cache Creation',
   'usage.cacheReadTokensLabel': 'Cache Read',
+  'usage.cacheHit': 'Cache hit',
+  'usage.cacheCreate': 'Cache create',
+  'usage.cacheHitRate': 'Cache hit rate',
   'usage.totalCost': 'Total Cost',
   'usage.accountCost': 'Cost',
   'usage.standardCost': 'Standard',
@@ -57,11 +60,17 @@ describe('UsageStatsCards', () => {
     })
 
     const text = wrapper.text()
+    // keep total cache + hover breakdown
     expect(text).toContain('Cache: 34')
     expect(text).toContain('Cache Token Breakdown')
     expect(text).toContain('Cache Creation')
     expect(text).toContain('12')
     expect(text).toContain('Cache Read')
     expect(text).toContain('22')
+    // hit / create / hit-rate (denom = input100 + read22 + create12 = 134)
+    expect(text).toContain('Cache hit')
+    expect(text).toContain('Cache create')
+    expect(text).toContain('Cache hit rate')
+    expect(text).toContain('16.4%') // 22/134 ? 16.4%
   })
 })
